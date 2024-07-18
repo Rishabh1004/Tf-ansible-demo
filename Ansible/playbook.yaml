@@ -1,0 +1,47 @@
+- name: Installing Docker and deploying application
+  hosts: all
+  become: true
+  become_user: root
+  tasks:
+    - name: Update apt package cache
+      apt:
+        update_cache: yes
+
+    - name: Install pip for Python 3
+      apt:
+        name: python3-pip
+        state: present
+
+    - name: Install Docker Python library
+      pip:
+        name: docker
+        executable: pip3
+        state: present
+
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+        enabled : yes
+
+    - name: Load variables from vault
+      include_vars:
+        file: pass.yml
+      vars:
+        ansible_vault_password: "{{ lookup('file', 'vault.pass') }}"
+
+    - name: Docker login to Azure Container Registry
+      docker_login:
+        registry_url: rutwik12345.azurecr.io
+        username: "{{acr_username}}"
+        password: "{{acr_password}}"
+        reauthorize: yes
+
+    - name: Deployment
+      command: docker run -itd -p 8888:80 rutwik12345.azurecr.io/Tf-ansible-nginx:latest
+
