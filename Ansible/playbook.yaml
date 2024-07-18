@@ -43,5 +43,5 @@
         reauthorize: yes
 
     - name: Deployment
-      command: docker run -itd -p 8888:80 rutwik12345.azurecr.io/Tf-ansible-nginx:latest
+      command: docker run -itd -p 8888:80 rutwik12345.azurecr.io/tf-ansible-nginx:latest
 
