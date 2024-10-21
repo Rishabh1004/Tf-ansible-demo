@@ -11,4 +11,5 @@ LABEL maintainer="Rutwik Dadgal"
 EXPOSE 80
 
 # Start Nginx in the foreground
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["nginx", "-g", "daemon off;"] 
+#yes
